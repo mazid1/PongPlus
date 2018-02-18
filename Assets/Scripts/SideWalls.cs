@@ -9,6 +9,7 @@ public class SideWalls : MonoBehaviour {
     {
         if (collider.name == "Ball") {
             GameManager.ScoreUpdate(transform.name);
+            collider.gameObject.SendMessage("RestartGame");
         }
     }
 }
