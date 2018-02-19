@@ -8,6 +8,8 @@ public class BallController : MonoBehaviour {
     private Vector2 velocity;
     private int verticalForce = 10;
     private int horizontalForce = 80;
+    //private float time = 0.0f;
+    private float speedMultiplier = 1.001f;
 
 	// Use this for initialization
 	void Start () {
@@ -33,10 +35,17 @@ public class BallController : MonoBehaviour {
         }
     }
 
+    private void Update () {
+        //time += Time.deltaTime;
+        velocity.x = mRigidbody2D.velocity.x * speedMultiplier;
+        velocity.y = mRigidbody2D.velocity.y;
+        mRigidbody2D.velocity = velocity;
+    }
+
     private void OnCollisionEnter2D (Collision2D collision) {
         if (collision.collider.CompareTag("Player")) {
             velocity.x = mRigidbody2D.velocity.x;
-            velocity.y = (mRigidbody2D.velocity.y / 2.0f) + (collision.collider.attachedRigidbody.velocity.y / 3.0f);
+            velocity.y = (mRigidbody2D.velocity.y) + (collision.collider.attachedRigidbody.velocity.y / 3.0f);
             mRigidbody2D.velocity = velocity;
         }
     }
