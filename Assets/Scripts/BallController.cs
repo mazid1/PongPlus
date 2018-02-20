@@ -7,9 +7,9 @@ public class BallController : MonoBehaviour {
     private Rigidbody2D mRigidbody2D;
     private Vector2 velocity;
     private int verticalForce = 10;
-    private int horizontalForce = 80;
+    private int horizontalForce = 30;
     //private float time = 0.0f;
-    private float speedMultiplier = 1.001f;
+    private float speedMultiplier = 1.0005f;
 
 	// Use this for initialization
 	void Start () {
@@ -40,12 +40,13 @@ public class BallController : MonoBehaviour {
         velocity.x = mRigidbody2D.velocity.x * speedMultiplier;
         velocity.y = mRigidbody2D.velocity.y;
         mRigidbody2D.velocity = velocity;
+        //Debug.Log("velocity = " + velocity.x);
     }
 
     private void OnCollisionEnter2D (Collision2D collision) {
         if (collision.collider.CompareTag("Player")) {
             velocity.x = mRigidbody2D.velocity.x;
-            velocity.y = (mRigidbody2D.velocity.y) + (collision.collider.attachedRigidbody.velocity.y / 3.0f);
+            velocity.y = (mRigidbody2D.velocity.y / 1.2f) + (collision.collider.attachedRigidbody.velocity.y / 3.0f);
             mRigidbody2D.velocity = velocity;
         }
     }
