@@ -9,23 +9,39 @@ public class PlayerController : MonoBehaviour {
 
     public float speed = 10f;
 
-    private Rigidbody2D rBody;
+    public Camera cam;
+
+    private Rigidbody2D mRigidbody2D;
+    private Renderer mRenderer;
+    private float maxHeight;
 
     private void Start ()
     {
-        rBody = GetComponent<Rigidbody2D>();
+        if (cam == null) {
+            cam = Camera.main;
+        }
+        mRigidbody2D = GetComponent<Rigidbody2D> ();
+        mRenderer = GetComponent<Renderer> ();
+        Vector3 upperCorner = new Vector3 (Screen.width, Screen.height, 0.0f);
+        Vector3 targetHeight = cam.ScreenToWorldPoint (upperCorner);
+        float paddleHeight = mRenderer.bounds.extents.y;
+        maxHeight = targetHeight.y - paddleHeight;
     }
 
-    // Update is called once per frame
-    void Update () {
+    // FixedUpdate is called once per physics timestep
+    void FixedUpdate () {
 		if (Input.GetKey(moveUp)) {
-            rBody.velocity = new Vector2(0f, speed);
+            mRigidbody2D.velocity = new Vector2 (0f, speed);
         }
         else if(Input.GetKey(moveDown)) {
-            rBody.velocity = new Vector2(0f, -speed);
+            mRigidbody2D.velocity = new Vector2 (0f, -speed);
         }
         else {
-            rBody.velocity = new Vector2(0f, 0f);
+            mRigidbody2D.velocity = new Vector2 (0f, 0f);
         }
-	}
+        Vector3 targetPosition = mRigidbody2D.transform.position;
+        float targetHeight = Mathf.Clamp (targetPosition.y, -maxHeight, maxHeight);
+        targetPosition = new Vector3 (targetPosition.x, targetHeight, targetPosition.z);
+        mRigidbody2D.transform.position = targetPosition;
+    }
 }

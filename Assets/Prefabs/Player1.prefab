@@ -50,7 +50,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1764034133467958}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -102,6 +102,7 @@ MonoBehaviour:
   moveUp: 119
   moveDown: 115
   speed: 10
+  cam: {fileID: 0}
 --- !u!212 &212962326722493238
 SpriteRenderer:
   m_ObjectHideFlags: 1
