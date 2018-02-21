@@ -23,6 +23,10 @@ public class BallController : MonoBehaviour {
 	}
 
     private void GoBall () {
+        // Deactive round number text from UI
+        // It is activated from GameManager.Spawn() method
+        GameManager.GetRoundObject ().SetActive (false);
+
         float rand = Random.Range(0, 2);
         if (rand < 1) {
             rand = Random.Range(0, 2);

@@ -9,11 +9,14 @@ public class GameManager : MonoBehaviour {
     public Text text1;
     public Text text2;
     public GameObject ball;
+    public GameObject roundObject;
+    public Text roundText;
 
     private int score1 = 0;
     private int score2 = 0;
     private int maxBalls = 3;
     private int currentBalls = 0;
+    private int round = 0;
 
     private void Awake ()
     {
@@ -41,6 +44,11 @@ public class GameManager : MonoBehaviour {
     }
 
     IEnumerator Spawn () {
+        // Show Round number
+        instance.roundText.text = "Round " + ++instance.round;
+        instance.roundObject.SetActive (true);
+        
+        // Instantiate balls
         for (int i = 0; i < instance.maxBalls; i++) {
             Vector3 spawnPosition = Vector3.zero;
             Quaternion spawnRotation = Quaternion.identity;
@@ -60,5 +68,9 @@ public class GameManager : MonoBehaviour {
 
     public static void StartNewRound () {
         instance.StartCoroutine (instance.Spawn());
+    }
+
+    public static GameObject GetRoundObject() {
+        return instance.roundObject;
     }
 }
