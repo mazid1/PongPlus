@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
 
     public float speed = 10f;
 
-    public Camera cam;
+    private Camera cam;
 
     private Rigidbody2D mRigidbody2D;
     private Renderer mRenderer;

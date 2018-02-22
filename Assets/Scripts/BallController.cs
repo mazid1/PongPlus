@@ -16,10 +16,10 @@ public class BallController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        mRigidbody2D = GetComponent<Rigidbody2D>();
-        velocity = new Vector2();
+        mRigidbody2D = GetComponent<Rigidbody2D> ();
+        velocity = new Vector2 ();
         contactPoints = new ContactPoint2D[10];
-        Invoke("GoBall", 2);
+        Invoke ("GoBall", 2);
 	}
 
     private void GoBall () {
@@ -27,23 +27,23 @@ public class BallController : MonoBehaviour {
         // It is activated from GameManager.Spawn() method
         GameManager.GetRoundObject ().SetActive (false);
 
-        float rand = Random.Range(0, 2);
+        float rand = Random.Range (0, 2);
         if (rand < 1) {
-            rand = Random.Range(0, 2);
+            rand = Random.Range (0, 2);
             if (rand < 1)
-                mRigidbody2D.AddForce(new Vector2(horizontalForce, verticalForce));
+                mRigidbody2D.AddForce (new Vector2 (horizontalForce, verticalForce));
             else
-                mRigidbody2D.AddForce(new Vector2(-horizontalForce, verticalForce));
+                mRigidbody2D.AddForce (new Vector2 (-horizontalForce, verticalForce));
         } else {
-            rand = Random.Range(0, 2);
+            rand = Random.Range (0, 2);
             if (rand < 1)
-                mRigidbody2D.AddForce(new Vector2(horizontalForce, -verticalForce));
+                mRigidbody2D.AddForce (new Vector2 (horizontalForce, -verticalForce));
             else
-                mRigidbody2D.AddForce(new Vector2(-horizontalForce, -verticalForce));
+                mRigidbody2D.AddForce (new Vector2 (-horizontalForce, -verticalForce));
         }
     }
 
-    private void Update () {
+    private void FixedUpdate () {
         //time += Time.deltaTime;
         velocity.x = mRigidbody2D.velocity.x * speedMultiplier;
         velocity.y = mRigidbody2D.velocity.y;
@@ -52,7 +52,8 @@ public class BallController : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D (Collision2D collision) {
-        if (collision.collider.CompareTag("Player")) {
+        Debug.Log (collision.collider.tag);
+        if (collision.collider.CompareTag ("Player")) {
             collision.GetContacts (contactPoints);
 
             if (mRigidbody2D.velocity.x > 0) {
@@ -60,11 +61,20 @@ public class BallController : MonoBehaviour {
                     mRigidbody2D.velocity.x
                     + (Mathf.Abs ((collision.transform.InverseTransformPoint (contactPoints[0].point)).y)
                     * maxVelocityX);
-            } else {
+                Debug.Log ("---------------");
+                Debug.Log ("Ball :" + mRigidbody2D.velocity.x);
+                Debug.Log ("New  :" + velocity.x);
+                //Debug.Log ("---------------");
+            }
+            else if (mRigidbody2D.velocity.x < 0) {
                 velocity.x = 
                     mRigidbody2D.velocity.x 
                     - (Mathf.Abs ((collision.transform.InverseTransformPoint (contactPoints[0].point)).y) 
                     * maxVelocityX);
+                Debug.Log ("---------------");
+                Debug.Log ("Ball :" + mRigidbody2D.velocity.x);
+                Debug.Log ("New  :" + velocity.x);
+                //Debug.Log ("---------------");
             }
 
             if (velocity.x < 5.0f && velocity.x > -5.0f) {
@@ -74,10 +84,14 @@ public class BallController : MonoBehaviour {
                     velocity.x = -5.0f;
             }
 
+            //Debug.Log ("---------------");
+            Debug.Log ("Last :" + velocity.x);
+            Debug.Log ("---------------");
+
             velocity.y = (collision.transform.InverseTransformPoint (contactPoints[0].point)).y * maxVelocityY;
             mRigidbody2D.velocity = velocity;
         }
-        else if (collision.collider.CompareTag("Ball")) {
+        else if (collision.collider.CompareTag ("Ball")) {
             velocity = mRigidbody2D.velocity;
             if (velocity.x < 5.0f && velocity.x > -5.0f) {
                 if (velocity.x > 0)
@@ -94,8 +108,8 @@ public class BallController : MonoBehaviour {
         transform.position = Vector2.zero;
     }
 
-    private void RestartGame() {
-        ResetBall();
-        Invoke("GoBall", 1);
+    private void RestartGame () {
+        ResetBall ();
+        Invoke ("GoBall", 1);
     }
 }
